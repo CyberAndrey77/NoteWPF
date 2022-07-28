@@ -1,0 +1,56 @@
+﻿<UserControl x:Class="NoteWpf.Views.LoginView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:NoteWpf.Views" 
+             xmlns:viewmodels="clr-namespace:NoteWpf.ViewModels" 
+             xmlns:components="clr-namespace:NoteWpf.Views.Components"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Background="AliceBlue">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Border Grid.Column="1" Grid.Row="1" BorderBrush="Gray" BorderThickness="2" Height="150" Width="250" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid Background="WhiteSmoke">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="Вход" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                <TextBlock Grid.Row="1" Text="Введите электронную почту" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="10"/>
+                <TextBox Grid.Row="2" Margin="10 5" Height="18" Text="{Binding Path=Email, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock Grid.Row="3" Text="Введите пароль" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="10"/>
+                <components:BindablePasswordBox Grid.Row="4" Margin="10 5" Height="18" Background="White"  Password="{Binding Password}"/>
+                <Grid Grid.Row="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <CheckBox Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10 0 5 0" IsChecked="{Binding IsRemember}">
+                        <CheckBox.LayoutTransform>
+                            <ScaleTransform ScaleX="0.5" ScaleY="0.5"/>
+                        </CheckBox.LayoutTransform>
+                    </CheckBox>
+                    <TextBlock Grid.Column="1" Text="Запомнить меня" FontSize="8" VerticalAlignment="Center"/>
+                    <Button Grid.Column="2" Background="DodgerBlue" Width="75" Content="Вход" FontSize="10" 
+                            HorizontalAlignment="Right" Height="20" Margin="5 5 10 5" Foreground="AliceBlue" Command="{Binding Login}" IsEnabled="{Binding IsButtonEnable}"/>
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>
