@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NoteWpf.Services;
 using System.Text.Json;
+using NoteWpf.Events;
 
 namespace NoteWpf.ViewModels
 {
@@ -18,6 +19,7 @@ namespace NoteWpf.ViewModels
         private bool _isRemember;
         private bool _isButtonEnable;
         private IFileService _fileService;
+        private IAuthorizationService _authorizationService;
         private string _filePath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\NoteAppWpf\\User.json";
 
         public string Email 
@@ -53,17 +55,18 @@ namespace NoteWpf.ViewModels
 
         public DelegateCommand Login { get; set; }
 
-        public LoginViewModel(IFileService fileService)
+        public LoginViewModel(IFileService fileService, IAuthorizationService authorizationService)
         {
             Login = new DelegateCommand(LoginCommand);
             _fileService = fileService;
-            //Task.Run(() =>
-            //{
-            //    var user = _fileService.ReadFileAsync(_filePath);
-            //    Email = user.Result.Email;
-            //    Password = user.Result.Password;
-            //});
+            _authorizationService = authorizationService;
+            _authorizationService.GetTokens += OnGetTokens;
             SetSavedLoginAndPasswordAsync();
+        }
+
+        private void OnGetTokens(object? sender, GetTokensEventArgs e)
+        {
+            Token token = e.Token;
         }
 
         private void CheckEmpty()
@@ -74,19 +77,13 @@ namespace NoteWpf.ViewModels
 
         private void LoginCommand()
         {
+            var user = new User() { Email = Email, Password = Password };
             if (IsRemember)
             {
-                _fileService.CreateFileAsync(_filePath, new User() { Email = Email, Password = Password });
+                CreateFileCookies(user);
             }
-            string b;
-            var task = Task.Run(() =>
-            {
-                WebService service = new WebService();
-                var json = JsonSerializer.Serialize(new User { Email = Email, Password = Password });
-                var a = service.Login(json, "https://localhost:7127/api/Authorize/login");
-                b = a.Result;
-            });
-            task.Wait();
+
+            Authorize(user);
         }
 
         private async void SetSavedLoginAndPasswordAsync()
@@ -94,6 +91,16 @@ namespace NoteWpf.ViewModels
             var user = await _fileService.ReadFileAsync(_filePath);
             Email = user.Email;
             Password = user.Password;
+        }
+
+        private async void CreateFileCookies(User user)
+        {
+            await _fileService.CreateFileAsync(_filePath, user);
+        }
+
+        private async void Authorize(User user)
+        {
+            await _authorizationService.SendEmailAndPassword(user);
         }
     }
 }

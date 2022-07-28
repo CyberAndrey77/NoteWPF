@@ -1,4 +1,5 @@
-﻿using NoteWpf.Models;
+﻿using NoteWpf.Events;
+using NoteWpf.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,8 @@ namespace NoteWpf.Services.Interface
 {
     public interface IAuthorizationService
     {
-        List<string> GetTokens(User user);
+        EventHandler<GetTokensEventArgs> GetTokens { get; set; }
+        Task SendEmailAndPassword(User user);
         List<string> RefreshTokens(string accessToken);
     }
 }

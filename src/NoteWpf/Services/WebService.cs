@@ -20,19 +20,19 @@ namespace NoteWpf.Services
             _url = new DataURL();
         }
 
-        public async Task<string> SendDeleteResponceAsync(string json, ControllerTypes controller, string accessToken)
+        public string SendDeleteResponceAsync(string json, ControllerTypes controller, string accessToken)
         {
-            return await SendRequestAsync(json, controller, accessToken, HttpMethod.Delete);
+            return SendRequestAsync(json, controller, accessToken, HttpMethod.Delete).Result;
         }
 
-        public async Task<string> SendGetResponceAsync(string json, ControllerTypes controller)
+        public string SendGetResponceAsync(string json, ControllerTypes controller)
         {
-            return await SendGetResponceAsync(json, controller, string.Empty);
+            return SendGetResponceAsync(json, controller, string.Empty);
         }
 
-        public async Task<string> SendGetResponceAsync(string json, ControllerTypes controller, string accessToken)
+        public string SendGetResponceAsync(string json, ControllerTypes controller, string accessToken)
         {
-            return await SendRequestAsync(json, controller, accessToken, HttpMethod.Get);
+            return SendRequestAsync(json, controller, accessToken, HttpMethod.Get).Result;
         }
 
         public async Task<string> SendPostResponceAsync(string json, ControllerTypes controller)
@@ -45,9 +45,9 @@ namespace NoteWpf.Services
             return await SendRequestAsync(json, controller, accessToken, HttpMethod.Post);
         }
 
-        public async Task<string> SendPutResponceAsync(string json, ControllerTypes controller, string accessToken)
+        public string SendPutResponceAsync(string json, ControllerTypes controller, string accessToken)
         {
-            return await SendRequestAsync(json, controller, accessToken, HttpMethod.Put);
+            return SendRequestAsync(json, controller, accessToken, HttpMethod.Put).Result;
         }
 
         private async Task<string> SendRequestAsync(string json, ControllerTypes controller, string accessToken, HttpMethod method)

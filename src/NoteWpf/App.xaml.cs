@@ -30,6 +30,9 @@ namespace NoteWpf
         {
             IServiceCollection services = new ServiceCollection();
             services.AddSingleton<IFileService, FileService>();
+            services.AddSingleton<IJsonSerializerService, JsonSerializerService>();
+            services.AddSingleton<IWebService, WebService>();
+            services.AddSingleton<IAuthorizationService, AuthorizationService>();
 
 
             services.AddSingleton<MainViewModel>();
