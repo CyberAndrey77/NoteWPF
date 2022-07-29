@@ -11,6 +11,7 @@ namespace NoteWpf.Services.Interface
     {
         Task<string> SendPostResponceAsync(string json, ControllerTypes controller);
         string SendGetResponceAsync(string json, ControllerTypes controller);
+        string SendGetResponceAsync(ControllerTypes controller, string accessToken);
         string SendGetResponceAsync(string json, ControllerTypes controller, string accessToken);
         string SendDeleteResponceAsync(string json, ControllerTypes controller, string accessToken);
         Task<string> SendPostResponceAsync(string json, ControllerTypes controller, string accessToken);

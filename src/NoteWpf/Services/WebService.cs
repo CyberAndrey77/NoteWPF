@@ -29,6 +29,11 @@ namespace NoteWpf.Services
         {
             return SendGetResponceAsync(json, controller, string.Empty);
         }
+        
+        public string SendGetResponceAsync(ControllerTypes controller, string accessToken)
+        {
+            return SendGetResponceAsync(string.Empty, controller, accessToken);
+        }
 
         public string SendGetResponceAsync(string json, ControllerTypes controller, string accessToken)
         {

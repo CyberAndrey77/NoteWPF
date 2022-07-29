@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using NoteWpf.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,14 @@ namespace NoteWpf.ViewModels
 
         public MainViewModel()
         {
-            CurrentVM = App.Current.ServiceProvider.GetService<LoginViewModel>();
+            LoginViewModel loginViewModel = App.Current.ServiceProvider.GetService<LoginViewModel>();
+            CurrentVM = loginViewModel;
+            loginViewModel.GetTokens += OnGetTokens;
+        }
+
+        private void OnGetTokens(object? sender, GetTokensEventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 }

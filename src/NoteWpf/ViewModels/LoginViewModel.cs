@@ -18,9 +18,11 @@ namespace NoteWpf.ViewModels
         private string _password;
         private bool _isRemember;
         private bool _isButtonEnable;
-        private IFileService _fileService;
-        private IAuthorizationService _authorizationService;
-        private string _filePath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\NoteAppWpf\\User.json";
+        private readonly IFileService _fileService;
+        private readonly IAuthorizationService _authorizationService;
+        private readonly string _filePath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\NoteAppWpf\\User.json";
+
+        public EventHandler<GetTokensEventArgs> GetTokens { get; set; }
 
         public string Email 
         {
@@ -100,7 +102,9 @@ namespace NoteWpf.ViewModels
 
         private async void Authorize(User user)
         {
-            await _authorizationService.SendEmailAndPassword(user);
+            Token token = await _authorizationService.SendEmailAndPassword(user);
+
+            GetTokens?.Invoke(this, new GetTokensEventArgs(token));
         }
     }
 }

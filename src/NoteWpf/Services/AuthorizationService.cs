@@ -22,7 +22,7 @@ namespace NoteWpf.Services
             _jsonSerializerService = serializerService;
         }
 
-        public async Task SendEmailAndPassword(User user)
+        public async Task<Token> SendEmailAndPassword(User user)
         {
             string json = _jsonSerializerService.Serialize(user);
             string tokens = await _webService.SendPostResponceAsync(json, ControllerTypes.Login);
@@ -32,7 +32,8 @@ namespace NoteWpf.Services
             }
 
             Token token = _jsonSerializerService.Deserialize<Token>(tokens);
-            GetTokens?.Invoke(this, new GetTokensEventArgs(token));
+            return token;
+            //GetTokens?.Invoke(this, new GetTokensEventArgs(token));
         }
 
         public List<string> RefreshTokens(string accessToken)

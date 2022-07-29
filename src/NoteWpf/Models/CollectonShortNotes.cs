@@ -6,13 +6,8 @@ using System.Threading.Tasks;
 
 namespace NoteWpf.Models
 {
-    public enum ControllerTypes
+    public class CollectonShortNotes
     {
-        Login,
-        RefreshToken,
-        GetAllNotes,
-        GetNote,
-        UpdateNote,
-        DeleteNote
+        public List<ShortNote> ShortNotes { get; set; } = new List<ShortNote>();
     }
 }

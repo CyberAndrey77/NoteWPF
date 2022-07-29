@@ -6,13 +6,9 @@ using System.Threading.Tasks;
 
 namespace NoteWpf.Models
 {
-    public class Note
+    public class ShortNote
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Text { get; set; }
-        public string DateCreated { get; set; }
-        public string DateUpdate { get; set; }
-        public int CategoryId { get; set; }
     }
 }
