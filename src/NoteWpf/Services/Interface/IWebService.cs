@@ -9,12 +9,12 @@ namespace NoteWpf.Services.Interface
 {
     public interface IWebService
     {
-        Task<string> SendPostResponceAsync(string json, ControllerTypes controller);
-        string SendGetResponceAsync(string json, ControllerTypes controller);
-        string SendGetResponceAsync(ControllerTypes controller, string accessToken);
-        string SendGetResponceAsync(string json, ControllerTypes controller, string accessToken);
-        string SendDeleteResponceAsync(string json, ControllerTypes controller, string accessToken);
-        Task<string> SendPostResponceAsync(string json, ControllerTypes controller, string accessToken);
-        string SendPutResponceAsync(string json, ControllerTypes controller, string accessToken);
+        ResponceData SendPostResponceAsync(string json, ControllerTypes controller);
+        ResponceData SendGetResponceAsync(string json, ControllerTypes controller);
+        ResponceData SendGetResponceAsync(ControllerTypes controller, string accessToken);
+        ResponceData SendGetResponceAsync(string json, ControllerTypes controller, string accessToken);
+        ResponceData SendDeleteResponceAsync(string json, ControllerTypes controller, string accessToken);
+        ResponceData SendPostResponceAsync(string json, ControllerTypes controller, string accessToken);
+        ResponceData SendPutResponceAsync(string json, ControllerTypes controller, string accessToken);
     }
 }

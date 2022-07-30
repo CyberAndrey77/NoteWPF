@@ -10,8 +10,7 @@ namespace NoteWpf.Services.Interface
 {
     public interface IAuthorizationService
     {
-        EventHandler<GetTokensEventArgs> GetTokens { get; set; }
-        Task<Token> SendEmailAndPassword(User user);
+        DeserializedData<Token> SendEmailAndPassword(User user);
         List<string> RefreshTokens(string accessToken);
     }
 }

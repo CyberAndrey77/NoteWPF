@@ -26,7 +26,14 @@ namespace NoteWpf.ViewModels
 
         private void OnGetTokens(object? sender, GetTokensEventArgs e)
         {
-            throw new NotImplementedException();
+            if (e.Token == null)
+            {
+                return;
+            }
+            var noteViewModel = App.Current.ServiceProvider.GetService<NoteViewModel>();
+            noteViewModel.Token = e.Token;
+            CurrentVM = noteViewModel;
+
         }
     }
 }

@@ -9,12 +9,12 @@ namespace NoteWpf.Services.Interface
 {
     public interface INoteService
     {
-        Task<CollectonShortNotes> GetAllNotes(string accessToken);
+        DeserializedData<CollectonShortNotes> GetAllNotes(string accessToken);
 
-        Task<Note> GetNoteById(int id, string accessToken);
+        DeserializedData<Note> GetNoteById(int id, string accessToken);
 
-        Task<Note> UpdateNoteById(int id, string accessToken);
+        Note UpdateNoteById(int id, string accessToken);
 
-        Task DeleteNoteById(int id, string accessToken);
+        void DeleteNoteById(int id, string accessToken);
     }
 }

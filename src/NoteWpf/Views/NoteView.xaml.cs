@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using NoteWpf.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +25,7 @@ namespace NoteWpf.Views
         public NoteView()
         {
             InitializeComponent();
+            DataContext = App.Current.ServiceProvider.GetService<NoteViewModel>();
         }
     }
 }

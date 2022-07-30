@@ -14,7 +14,6 @@ namespace NoteWpf.Services
         private readonly IWebService _webService;
         private readonly IJsonSerializerService _jsonSerializerService;
 
-        public EventHandler<GetTokensEventArgs> GetTokens { get; set; }
 
         public AuthorizationService(IWebService webService, IJsonSerializerService serializerService)
         {
@@ -22,18 +21,24 @@ namespace NoteWpf.Services
             _jsonSerializerService = serializerService;
         }
 
-        public async Task<Token> SendEmailAndPassword(User user)
+        public DeserializedData<Token> SendEmailAndPassword(User user)
         {
             string json = _jsonSerializerService.Serialize(user);
-            string tokens = await _webService.SendPostResponceAsync(json, ControllerTypes.Login);
-            if (string.IsNullOrEmpty(tokens))
+            ResponceData data = _webService.SendPostResponceAsync(json, ControllerTypes.Login);
+            var tokenData = new DeserializedData<Token>
             {
-                throw new ArgumentException("Запрос был не удачный");
+                StatusCode = data.StatusCode
+            };
+
+            if (string.IsNullOrEmpty(data.JsonAnswer))
+            {
+                tokenData.Value = new Token();
+                return tokenData;
             }
 
-            Token token = _jsonSerializerService.Deserialize<Token>(tokens);
-            return token;
-            //GetTokens?.Invoke(this, new GetTokensEventArgs(token));
+            Token token = _jsonSerializerService.Deserialize<Token>(data.JsonAnswer);
+            tokenData.Value = token;
+            return tokenData;
         }
 
         public List<string> RefreshTokens(string accessToken)

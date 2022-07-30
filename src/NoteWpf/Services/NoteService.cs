@@ -19,32 +19,57 @@ namespace NoteWpf.Services
             _jsonSerializerService = jsonSerializerService;
         }
 
-        public async Task DeleteNoteById(int id, string accessToken)
+        public void DeleteNoteById(int id, string accessToken)
         {
-            string json = _jsonSerializerService.Serialize(id);
-            string responce = await _webService.SendPostResponceAsync(json, ControllerTypes.DeleteNote, accessToken);
-            if (string.IsNullOrEmpty(responce))
+            //string json = _jsonSerializerService.Serialize(id);
+            //string responce = _webService.SendDeleteResponceAsync(json, ControllerTypes.DeleteNote, accessToken);
+            //if (string.IsNullOrEmpty(responce))
+            //{
+            //    throw new ArgumentException("Запрос был не удачный");
+            //}
+        }
+
+        public DeserializedData<CollectonShortNotes> GetAllNotes(string accessToken)
+        {
+            ResponceData data = _webService.SendGetResponceAsync(ControllerTypes.GetAllNotes, accessToken);
+            var notesData = new DeserializedData<CollectonShortNotes>()
             {
-                throw new ArgumentException("Запрос был не удачный");
-            }
-        }
+                StatusCode = data.StatusCode
+            };
 
-        public async Task<CollectonShortNotes> GetAllNotes(string accessToken)
-        {
-            string responce = _webService.SendGetResponceAsync(ControllerTypes.DeleteNote, accessToken);
-            if (string.IsNullOrEmpty(responce))
+            if (string.IsNullOrEmpty(data.JsonAnswer))
             {
-                throw new ArgumentException("Запрос был не удачный");
+                notesData.Value = new CollectonShortNotes();
+                return notesData;
             }
-            return null;
+            CollectonShortNotes notes = _jsonSerializerService.Deserialize<CollectonShortNotes>(data.JsonAnswer);
+            if (notes == null)
+            {
+                throw new ArgumentException("Данные не десериализовались");
+            }
+
+            notesData.Value = notes;
+            return notesData;
         }
 
-        public Task<Note> GetNoteById(int id, string accessToken)
+        public DeserializedData<Note> GetNoteById(int id, string accessToken)
         {
-            throw new NotImplementedException();
+            ResponceData data = _webService.SendGetResponceAsync(id.ToString(), ControllerTypes.GetNote, accessToken);
+            var notesData = new DeserializedData<Note>()
+            {
+                StatusCode = data.StatusCode
+            };
+            if (string.IsNullOrEmpty(data.JsonAnswer))
+            {
+                notesData.Value = new Note();
+                return notesData;
+            }
+            Note note = _jsonSerializerService.Deserialize<Note>(data.JsonAnswer);
+            notesData.Value = note ?? throw new ArgumentException("Данные не десериализовались");
+            return notesData;
         }
 
-        public Task<Note> UpdateNoteById(int id, string accessToken)
+        public Note UpdateNoteById(int id, string accessToken)
         {
             throw new NotImplementedException();
         }

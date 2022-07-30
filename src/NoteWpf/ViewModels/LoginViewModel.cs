@@ -20,6 +20,7 @@ namespace NoteWpf.ViewModels
         private bool _isButtonEnable;
         private readonly IFileService _fileService;
         private readonly IAuthorizationService _authorizationService;
+        private Token _token;
         private readonly string _filePath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\NoteAppWpf\\User.json";
 
         public EventHandler<GetTokensEventArgs> GetTokens { get; set; }
@@ -62,13 +63,7 @@ namespace NoteWpf.ViewModels
             Login = new DelegateCommand(LoginCommand);
             _fileService = fileService;
             _authorizationService = authorizationService;
-            _authorizationService.GetTokens += OnGetTokens;
             SetSavedLoginAndPasswordAsync();
-        }
-
-        private void OnGetTokens(object? sender, GetTokensEventArgs e)
-        {
-            Token token = e.Token;
         }
 
         private void CheckEmpty()
@@ -100,11 +95,15 @@ namespace NoteWpf.ViewModels
             await _fileService.CreateFileAsync(_filePath, user);
         }
 
-        private async void Authorize(User user)
+        private void Authorize(User user)
         {
-            Token token = await _authorizationService.SendEmailAndPassword(user);
-
-            GetTokens?.Invoke(this, new GetTokensEventArgs(token));
+            DeserializedData<Token> tokenData = _authorizationService.SendEmailAndPassword(user);
+            if (tokenData.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                throw new ArgumentException(tokenData.StatusCode.ToString());
+            }
+            _token = tokenData.Value;
+            GetTokens?.Invoke(this, new GetTokensEventArgs(_token));
         }
     }
 }

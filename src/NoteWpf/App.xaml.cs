@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using NoteWpf.Models;
 using NoteWpf.Services;
 using NoteWpf.Services.Interface;
 using NoteWpf.ViewModels;
@@ -33,10 +34,12 @@ namespace NoteWpf
             services.AddSingleton<IJsonSerializerService, JsonSerializerService>();
             services.AddSingleton<IWebService, WebService>();
             services.AddSingleton<IAuthorizationService, AuthorizationService>();
+            services.AddSingleton<INoteService, NoteService>();
 
 
             services.AddSingleton<MainViewModel>();
             services.AddSingleton<LoginViewModel>();
+            services.AddSingleton<NoteViewModel>();
             return services.BuildServiceProvider();
         }
     }

@@ -9,9 +9,6 @@ namespace NoteWpf.Models
 {
     public class Token
     {
-        //[JsonPropertyName("$id")]
-        //public string Id { get; set; }
-
         [JsonPropertyName("accessToken")]
         public string AccessToken { get; set; }
 

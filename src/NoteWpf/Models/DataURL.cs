@@ -10,8 +10,10 @@ namespace NoteWpf.Models
     {
         public Dictionary<ControllerTypes, string> Url { get; private set; } = new Dictionary<ControllerTypes, string>()
         {
-            {ControllerTypes.Login, "api/Authorize/login"},
-            {ControllerTypes.RefreshToken, "api/Authorize/refresh"},
+            {ControllerTypes.Login, "api/Authorize/login/"},
+            {ControllerTypes.RefreshToken, "api/Authorize/refresh/"},
+            {ControllerTypes.GetAllNotes, "api/Notes/" },
+            {ControllerTypes.GetNote, "api/Notes/" },
         };
     }
 }
