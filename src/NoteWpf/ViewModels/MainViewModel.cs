@@ -30,7 +30,7 @@ namespace NoteWpf.ViewModels
             {
                 return;
             }
-            var noteViewModel = App.Current.ServiceProvider.GetService<NoteViewModel>();
+            var noteViewModel = App.Current.ServiceProvider.GetService<MainNoteViewModel>();
             noteViewModel.Token = e.Token;
             CurrentVM = noteViewModel;
 

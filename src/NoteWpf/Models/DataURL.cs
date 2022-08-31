@@ -14,6 +14,7 @@ namespace NoteWpf.Models
             {ControllerTypes.RefreshToken, "api/Authorize/refresh/"},
             {ControllerTypes.GetAllNotes, "api/Notes/" },
             {ControllerTypes.GetNote, "api/Notes/" },
+            {ControllerTypes.GetAllCategory, "api/Category/" },
         };
     }
 }

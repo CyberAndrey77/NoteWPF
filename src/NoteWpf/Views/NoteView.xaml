@@ -27,16 +27,16 @@
                     <RowDefinition Height="50"/>
                 </Grid.RowDefinitions>
 
-                <ListBox Grid.Row="0" ItemsSource="{Binding Path=Notes}" SelectedItem="{Binding Path=SelectedNote}">
+                <ListBox Grid.Row="0" ItemsSource="{Binding Notes}" SelectedItem="{Binding SelectedNote}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Path=Name}" TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding Name}" TextWrapping="Wrap"/>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
             </Grid>
 
-            <Grid Grid.Column="2" DataContext="{Binding Path=CurrentNote}" Margin="10 0">
+            <Grid Grid.Column="2"  Margin="10 0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -46,7 +46,7 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock Grid.Row="0" Text="Название" Height="25"/>
-                <TextBox Grid.Row="1" Text="{Binding Path=NoteName}" Height="25"/>
+                <TextBox Grid.Row="1" DataContext="{Binding CurrentNote}" Text="{Binding NoteName}" Height="25"/>
                 <Grid Grid.Row="2"  Margin="0 5 0 5">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -59,13 +59,17 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="Категория" Height="25"/>
-                    <ComboBox Grid.Row="1" Grid.Column="0"/>
+                    <ComboBox Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Categories}" DisplayMemberPath="CategoryName" >
+                        
+                    </ComboBox>
                     <TextBlock Grid.Row="1" Grid.Column="1" Text="Дата создания:" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5 0"/>
-                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Path=DataCreated}" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5 0"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1" DataContext="{Binding CurrentNote}" Text="{Binding DataCreated}" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5 0"/>
                     <TextBlock Grid.Row="1" Grid.Column="2" Text="Дата изменения:" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5 0"/>
-                    <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Path=DataUpdated}" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5 0"/>
+                    <TextBlock Grid.Row="1" Grid.Column="2" DataContext="{Binding CurrentNote}" Text="{Binding DataUpdated}" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5 0"/>
                 </Grid>
-                <TextBox Grid.Row ="3" TextWrapping="Wrap" Text="{Binding Path=NoteText}"/>
+                <TextBox Grid.Row ="3" TextWrapping="Wrap" DataContext="{Binding CurrentNote}" Text="{Binding NoteText}"/>
+
+                <Button Grid.Row="4" Height="30" Width="75" Content="Сохранить" HorizontalAlignment="Right" Margin="10" Background="DodgerBlue" Foreground="AliceBlue"/>
             </Grid>
         </Grid>
     </Grid>

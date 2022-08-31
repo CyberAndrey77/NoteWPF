@@ -13,7 +13,7 @@
         <DataTemplate DataType="{x:Type viewModels:LoginViewModel}">
             <view:LoginView/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type viewModels:NoteViewModel}">
+        <DataTemplate DataType="{x:Type viewModels:MainNoteViewModel}">
             <view:NoteView/>
         </DataTemplate>
     </Window.Resources>

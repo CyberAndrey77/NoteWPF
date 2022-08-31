@@ -17,6 +17,7 @@ namespace NoteWpf.Services
         public WebService()
         {
             _client = new HttpClient();
+            _client.Timeout = TimeSpan.FromSeconds(60);
             _url = new DataURL();
         }
 
@@ -77,11 +78,20 @@ namespace NoteWpf.Services
                 request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("bearer", accessToken);
             }
 
-            HttpResponseMessage response = _client.SendAsync(request).Result;
-            
+            var response = new HttpResponseMessage(System.Net.HttpStatusCode.OK);
+            try
+            {
+                response = _client.SendAsync(request).Result;
+            }
+            catch (Exception e)
+            {
+                response = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError);
+            }
+
             var responceData = new ResponceData();
             responceData.StatusCode = response.StatusCode;
             responceData.JsonAnswer = response.Content.ReadAsStringAsync().Result;
+
             return responceData;
         }
     }

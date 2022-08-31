@@ -13,6 +13,7 @@ namespace NoteWpf.Models
         GetAllNotes,
         GetNote,
         UpdateNote,
-        DeleteNote
+        DeleteNote,
+        GetAllCategory
     }
 }

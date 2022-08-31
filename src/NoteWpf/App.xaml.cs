@@ -35,11 +35,12 @@ namespace NoteWpf
             services.AddSingleton<IWebService, WebService>();
             services.AddSingleton<IAuthorizationService, AuthorizationService>();
             services.AddSingleton<INoteService, NoteService>();
+            services.AddSingleton<ICategoryService, CategoryService>();
 
 
             services.AddSingleton<MainViewModel>();
             services.AddSingleton<LoginViewModel>();
-            services.AddSingleton<NoteViewModel>();
+            services.AddSingleton<MainNoteViewModel>();
             return services.BuildServiceProvider();
         }
     }

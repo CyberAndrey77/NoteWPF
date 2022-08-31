@@ -1,8 +1,5 @@
-﻿using NoteWpf.Models;
-using NoteWpf.Services.Interface;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,75 +8,38 @@ namespace NoteWpf.ViewModels
 {
     public class NoteViewModel : BaseViewModel
     {
-        private ObservableCollection<ShortNote> _notes;
-        private readonly INoteService _noteService;
-        private Token _token;
-        private ShortNote _selectedNote;
-        private NoteModel _currentNote;
-
-        public Token Token
+        private string _noteName;
+        private int _noteCategory;
+        private string _dataCreated;
+        private string _dataUpdated;
+        public string NoteName
         {
-            get => _token;
-            set 
-            {
-                _token = value;
-                GetAllNotes();
-            }
-        }
-        
-        public ShortNote SelectedNote
-        {
-            get => _selectedNote;
-            set
-            {
-                SetProperty(ref _selectedNote, value);
-                GetNote(value.Id);
-            }
+            get => _noteName;
+            set => SetProperty(ref _noteName, value);
         }
 
-        public NoteModel CurrentNote
+        public string NoteText
         {
-            get => _currentNote;
-            set => SetProperty(ref _currentNote, value);
+            get => _noteName;
+            set => SetProperty(ref _noteName, value);
         }
 
-        public ObservableCollection<ShortNote> Notes
+        public int NoteCategory
         {
-            get => _notes;
-            set => SetProperty(ref _notes, value);
+            get => _noteCategory;
+            set => SetProperty(ref _noteCategory, value);
         }
 
-        public NoteViewModel(INoteService noteService)
+        public string DataCreated
         {
-            _noteService = noteService;
+            get => _dataCreated;
+            set => SetProperty(ref _dataCreated, value);
         }
 
-        private void GetAllNotes()
+        public string DataUpdated
         {
-            if (_token == null)
-            {
-                throw new ArgumentException("Нет токенов");
-            }
-            DeserializedData<CollectonShortNotes> deserializedData = _noteService.GetAllNotes(_token.AccessToken);
-            CollectonShortNotes notes = deserializedData.Value;
-            _notes = new ObservableCollection<ShortNote>(notes.ShortNotes);
-        }
-
-        private void GetNote(int id)
-        {
-            if (_token == null)
-            {
-                throw new ArgumentException("Нет токенов");
-            }
-
-            DeserializedData<Note> note = _noteService.GetNoteById(id, _token.AccessToken);
-
-            CurrentNote = new NoteModel();
-
-            CurrentNote.NoteName = note.Value.Name;
-            CurrentNote.NoteText = note.Value.Text;
-            CurrentNote.DataCreated = note.Value.DateCreated;
-            CurrentNote.DataUpdated = note.Value.DateUpdate;
+            get => _dataUpdated;
+            set => SetProperty(ref _dataUpdated, value);
         }
     }
 }

@@ -25,7 +25,7 @@ namespace NoteWpf.Views
         public NoteView()
         {
             InitializeComponent();
-            DataContext = App.Current.ServiceProvider.GetService<NoteViewModel>();
+            DataContext = App.Current.ServiceProvider.GetService<MainNoteViewModel>();
         }
     }
 }
