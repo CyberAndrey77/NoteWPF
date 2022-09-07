@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace NoteWpf.Models
 {
-    public class Note
+    public class Note : ICloneable
     {
         [JsonPropertyName("id")]
         public int Id { get; set; }
@@ -26,5 +26,10 @@ namespace NoteWpf.Models
 
         [JsonPropertyName("categoryId")]
         public int CategoryId { get; set; }
+
+        public object Clone()
+        {
+            return MemberwiseClone();
+        }
     }
 }

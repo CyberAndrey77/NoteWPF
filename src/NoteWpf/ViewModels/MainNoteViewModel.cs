@@ -11,6 +11,7 @@ namespace NoteWpf.ViewModels
 {
     public class MainNoteViewModel : BaseViewModel
     {
+        private ObservableCollection<Note> _filteredNotes;
         private ObservableCollection<Note> _notes;
         private readonly INoteService _noteService;
         private readonly ICategoryService _categoryService;
@@ -37,8 +38,12 @@ namespace NoteWpf.ViewModels
             get => _selectedNote;
             set
             {
+                if (value == null)
+                {
+                    return;
+                }
                 SetProperty(ref _selectedNote, value);
-                GetNote(value.Id);
+                ShowNote();
             }
         }
 
@@ -50,8 +55,8 @@ namespace NoteWpf.ViewModels
 
         public ObservableCollection<Note> Notes
         {
-            get => _notes;
-            set => SetProperty(ref _notes, value);
+            get => _filteredNotes;
+            set => SetProperty(ref _filteredNotes, value);
         }
 
         public CategoryViewModel SelectedCategory 
@@ -65,6 +70,28 @@ namespace NoteWpf.ViewModels
             get => _selectedCategoryFilter;
             set
             {
+                if (value.CategoryId == 0)
+                {
+                    _filteredNotes.Clear();
+                    for (int i = 0; i < _notes.Count; i++)
+                    {
+                        _filteredNotes.Add(_notes[i]);
+                    }
+                }
+                else
+                {
+                    if (_selectedCategoryFilter.CategoryId != value.CategoryId)
+                    {
+                        _filteredNotes.Clear();
+                        for (int i = 0; i < _notes.Count; i++)
+                        {
+                            if (_notes[i].CategoryId == value.CategoryId)
+                            {
+                                _filteredNotes.Add(_notes[i]);
+                            }
+                        }
+                    }
+                }
                 SetProperty(ref _selectedCategoryFilter, value);
             }
         }
@@ -95,6 +122,7 @@ namespace NoteWpf.ViewModels
             }
             DeserializedData<CollectonNotes> deserializedData = _noteService.GetAllNotes(_token.AccessToken);
             CollectonNotes notes = deserializedData.Value;
+            _filteredNotes = new ObservableCollection<Note>(notes.Notes);
             _notes = new ObservableCollection<Note>(notes.Notes);
             GetAllCategories();
         }
@@ -119,16 +147,8 @@ namespace NoteWpf.ViewModels
             SelectedCategoryFilter = categoryFilter;
         }
 
-        private void GetNote(int id)
+        private void ShowNote()
         {
-            if (_token == null)
-            {
-                throw new ArgumentException("Нет токенов");
-            }
-
-            //DeserializedData<Note> note = _noteService.GetNoteById(id, _token.AccessToken);
-
-
             CurrentNote = new NoteViewModel
             {
                 NoteName = _selectedNote.Name,
