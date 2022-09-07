@@ -18,6 +18,9 @@ namespace NoteWpf.ViewModels
         private ShortNote _selectedNote;
         private NoteViewModel _currentNote;
         private ObservableCollection<CategoryViewModel> _categories;
+        private CategoryViewModel _selectedCategory;
+        private CategoryViewModel _selectedCategoryFilter;
+        private ObservableCollection<CategoryViewModel> _categoriesFilter;
 
         public Token Token
         {
@@ -51,10 +54,31 @@ namespace NoteWpf.ViewModels
             set => SetProperty(ref _notes, value);
         }
 
+        public CategoryViewModel SelectedCategory 
+        {
+            get => _selectedCategory;
+            set => SetProperty(ref _selectedCategory, value);
+        }
+
+        public CategoryViewModel SelectedCategoryFilter
+        {
+            get => _selectedCategoryFilter;
+            set
+            {
+                SetProperty(ref _selectedCategoryFilter, value);
+            }
+        }
+
         public ObservableCollection<CategoryViewModel> Categories
         {
             get => _categories;
             set => SetProperty(ref _categories, value);
+        }
+
+        public ObservableCollection<CategoryViewModel> CategiesFilter
+        {
+            get => _categoriesFilter;
+            set => SetProperty(ref _categoriesFilter, value);
         }
 
         public MainNoteViewModel(INoteService noteService, ICategoryService categoryService)
@@ -84,10 +108,15 @@ namespace NoteWpf.ViewModels
             DeserializedData<CategoryCollection> deserializedData = _categoryService.GetAllCategories(_token.AccessToken);
             CategoryCollection categories = deserializedData.Value;
             Categories = new ObservableCollection<CategoryViewModel>();
+            CategiesFilter = new ObservableCollection<CategoryViewModel>();
             foreach (var category in categories.Categories)
             {
                 Categories.Add(new CategoryViewModel { CategoryId = category.Id, CategoryName = category.CategoryName });
+                CategiesFilter.Add(new CategoryViewModel { CategoryId = category.Id, CategoryName = category.CategoryName });
             }
+            var categoryFilter = new CategoryViewModel() { CategoryId = 0, CategoryName = "Все" };
+            CategiesFilter.Insert(0, categoryFilter);
+            SelectedCategoryFilter = categoryFilter;
         }
 
         private void GetNote(int id)
@@ -99,12 +128,16 @@ namespace NoteWpf.ViewModels
 
             DeserializedData<Note> note = _noteService.GetNoteById(id, _token.AccessToken);
 
-            CurrentNote = new NoteViewModel();
+            CurrentNote = new NoteViewModel
+            {
+                NoteName = note.Value.Name,
+                NoteText = note.Value.Text,
+                DataCreated = note.Value.DateCreated,
+                DataUpdated = note.Value.DateUpdate,
+                NoteCategory = note.Value.CategoryId
+            };
 
-            CurrentNote.NoteName = note.Value.Name;
-            CurrentNote.NoteText = note.Value.Text;
-            CurrentNote.DataCreated = note.Value.DateCreated;
-            CurrentNote.DataUpdated = note.Value.DateUpdate;
+            SelectedCategory = Categories.FirstOrDefault(x => x.CategoryId == note.Value.CategoryId);
         }
     }
 }
