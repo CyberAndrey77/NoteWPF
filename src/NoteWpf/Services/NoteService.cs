@@ -29,20 +29,20 @@ namespace NoteWpf.Services
             //}
         }
 
-        public DeserializedData<CollectonShortNotes> GetAllNotes(string accessToken)
+        public DeserializedData<CollectonNotes> GetAllNotes(string accessToken)
         {
             ResponceData data = _webService.SendGetResponceAsync(ControllerTypes.GetAllNotes, accessToken);
-            var notesData = new DeserializedData<CollectonShortNotes>()
+            var notesData = new DeserializedData<CollectonNotes>()
             {
                 StatusCode = data.StatusCode
             };
 
             if (string.IsNullOrEmpty(data.JsonAnswer))
             {
-                notesData.Value = new CollectonShortNotes();
+                notesData.Value = new CollectonNotes();
                 return notesData;
             }
-            CollectonShortNotes notes = _jsonSerializerService.Deserialize<CollectonShortNotes>(data.JsonAnswer);
+            CollectonNotes notes = _jsonSerializerService.Deserialize<CollectonNotes>(data.JsonAnswer);
             if (notes == null)
             {
                 throw new ArgumentException("Данные не десериализовались");

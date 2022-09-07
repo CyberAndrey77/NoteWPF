@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace NoteWpf.Models
 {
-    public class CollectonShortNotes
+    public class CollectonNotes
     {
         [JsonPropertyName("$values")]
-        public List<ShortNote> ShortNotes { get; set; } = new List<ShortNote>();
+        public List<Note> Notes { get; set; } = new List<Note>();
     }
 }

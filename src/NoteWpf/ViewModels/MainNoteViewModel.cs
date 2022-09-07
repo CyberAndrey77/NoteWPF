@@ -11,11 +11,11 @@ namespace NoteWpf.ViewModels
 {
     public class MainNoteViewModel : BaseViewModel
     {
-        private ObservableCollection<ShortNote> _notes;
+        private ObservableCollection<Note> _notes;
         private readonly INoteService _noteService;
         private readonly ICategoryService _categoryService;
         private Token _token;
-        private ShortNote _selectedNote;
+        private Note _selectedNote;
         private NoteViewModel _currentNote;
         private ObservableCollection<CategoryViewModel> _categories;
         private CategoryViewModel _selectedCategory;
@@ -32,7 +32,7 @@ namespace NoteWpf.ViewModels
             }
         }
         
-        public ShortNote SelectedNote
+        public Note SelectedNote
         {
             get => _selectedNote;
             set
@@ -48,7 +48,7 @@ namespace NoteWpf.ViewModels
             set => SetProperty(ref _currentNote, value);
         }
 
-        public ObservableCollection<ShortNote> Notes
+        public ObservableCollection<Note> Notes
         {
             get => _notes;
             set => SetProperty(ref _notes, value);
@@ -93,9 +93,9 @@ namespace NoteWpf.ViewModels
             {
                 throw new ArgumentException("Нет токенов");
             }
-            DeserializedData<CollectonShortNotes> deserializedData = _noteService.GetAllNotes(_token.AccessToken);
-            CollectonShortNotes notes = deserializedData.Value;
-            _notes = new ObservableCollection<ShortNote>(notes.ShortNotes);
+            DeserializedData<CollectonNotes> deserializedData = _noteService.GetAllNotes(_token.AccessToken);
+            CollectonNotes notes = deserializedData.Value;
+            _notes = new ObservableCollection<Note>(notes.Notes);
             GetAllCategories();
         }
 
@@ -126,18 +126,19 @@ namespace NoteWpf.ViewModels
                 throw new ArgumentException("Нет токенов");
             }
 
-            DeserializedData<Note> note = _noteService.GetNoteById(id, _token.AccessToken);
+            //DeserializedData<Note> note = _noteService.GetNoteById(id, _token.AccessToken);
+
 
             CurrentNote = new NoteViewModel
             {
-                NoteName = note.Value.Name,
-                NoteText = note.Value.Text,
-                DataCreated = note.Value.DateCreated,
-                DataUpdated = note.Value.DateUpdate,
-                NoteCategory = note.Value.CategoryId
+                NoteName = _selectedNote.Name,
+                NoteText = _selectedNote.Text,
+                DataCreated = _selectedNote.DateCreated,
+                DataUpdated = _selectedNote.DateUpdate,
+                NoteCategory = _selectedNote.CategoryId
             };
 
-            SelectedCategory = Categories.FirstOrDefault(x => x.CategoryId == note.Value.CategoryId);
+            SelectedCategory = Categories.FirstOrDefault(x => x.CategoryId == _selectedNote.CategoryId);
         }
     }
 }

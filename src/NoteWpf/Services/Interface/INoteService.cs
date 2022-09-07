@@ -9,7 +9,7 @@ namespace NoteWpf.Services.Interface
 {
     public interface INoteService
     {
-        DeserializedData<CollectonShortNotes> GetAllNotes(string accessToken);
+        DeserializedData<CollectonNotes> GetAllNotes(string accessToken);
 
         DeserializedData<Note> GetNoteById(int id, string accessToken);
 
